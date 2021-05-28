@@ -2,6 +2,8 @@ const router = require('express').Router();
 
 router.get('/', (req, res) => res.send('home'));
 router.use('/', require('./auth/auth'));
+router.use('/', require('./company/company-get'));
+router.use('/', require('./contracts/contracts-get'));
 router.use('/', require('./category/category-post'));
 router.use('/', require('./category/category-get'));
 router.use('/', require('./category/category-put'));
