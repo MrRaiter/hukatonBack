@@ -13,6 +13,15 @@ module.exports = (Sequelize, DataTypes) => {
       primaryKey: true,
       allowNull: false,
     },
+    company_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'company',
+        key: 'id',
+      },
+      onDelete: 'CASCADE',
+    },
     firstname: {
       type: DataTypes.STRING(20),
     },
@@ -65,9 +74,8 @@ module.exports = (Sequelize, DataTypes) => {
     }
   };
   User.associate = (models) => {
-    User.hasMany(models.Category, {
-      as: 'UserCategory',
-      foreignKey: { foreignKey: 'columnid' },
+    User.belongsTo(models.Company, {
+      foreignKey: { name: 'id', allowNull: false },
     });
   };
   return User;

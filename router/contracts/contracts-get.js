@@ -5,8 +5,6 @@ const aunteficate = require('../../middlewares/aunteficate');
 
 router.get('/contracts', async (req, res, next) => {
   try {
-    // const userId = res.locals.user.id;  aunteficate(),
-
     const contracts = await Contracts.findAll({
       include: [{
         model: Company,
@@ -14,7 +12,6 @@ router.get('/contracts', async (req, res, next) => {
     });
     res.json(contracts);
   } catch (err) {
-    console.log('err', err);
     return res.status(403).json({ message: err });
   }
 });

@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const klawSync = require('klaw-sync');
 const cors = require('cors');
 const config = require('./config/config');
 const router = require('./router/index');

@@ -51,14 +51,11 @@ module.exports = (Sequelize, DataTypes) => {
 
   Company.associate = (models) => {
     Company.hasMany(models.Contracts, {
-    //   as: 'company_id',
       foreignKey: 'company_id',
     });
-    //   Company.belongsTo(models.User, {
-    //     foreignKey: { name: 'id', allowNull: false },
-    //     as: 'User',
-    //     onDelete: 'CASCADE',
-    //   });
+    Company.hasMany(models.User, {
+      foreignKey: 'company_id',
+    });
   };
 
   return Company;
