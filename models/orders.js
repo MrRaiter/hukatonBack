@@ -28,6 +28,10 @@ module.exports = (Sequelize, DataTypes) => {
       },
       onDelete: 'CASCADE',
     },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     // createdAt: {
     //   allowNull: false,
     //   type: Sequelize.DATE,

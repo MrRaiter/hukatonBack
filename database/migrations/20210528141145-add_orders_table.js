@@ -28,6 +28,10 @@ module.exports = {
           model: 'contracts',
           key: 'id',
         },
+        status: {
+          type: Sequelize.STRING,
+          allowNull: true,
+        },
       },
       createdAt: {
         allowNull: true,
