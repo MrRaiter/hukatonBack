@@ -17,14 +17,8 @@
     <body>
         <div style="width: 85%; margin: 0 7.5%;">
             <div style="text-align: center; padding-left: 50px;">            
-                <h3 style="font-size: 50px;">Your notes</h3>
-                <% if (categories.length > 0) { %>
-                    <% categories.forEach(category => {%>
-                       <h2><%= category.title %></h2>
-                        <svg style="max-width: 300px; max-height:300px"><%- category.svg %></svg>
-                    
-                    <%  });%>
-                <% }%>
+                <h3 style="font-size: 50px;">Your report</h3>
+                <h2><%= newReport.title %></h2>
 
              </div>
         </div>

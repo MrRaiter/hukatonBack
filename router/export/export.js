@@ -5,13 +5,15 @@ const path = require('path');
 const { promises: fs } = require('fs');
 const aunteficate = require('../../middlewares/aunteficate');
 
-const { Category, Note } = require('../../models');
+const {
+  Reports, Orders, Company, Contracts,
+} = require('../../models');
 
 router.get('/fetch-pdf', async (req, res) => {
   res.sendFile(`${__dirname}/report.pdf`);
 });
 
-router.get('/generateReport', aunteficate(), async (req, res) => {
+router.get('/generateReport/:reportId', async (req, res) => {
   try {
     fs.access(`${__dirname}/report.pdf`, fs.F_OK, async (err) => {
       if (err) {
@@ -19,32 +21,21 @@ router.get('/generateReport', aunteficate(), async (req, res) => {
       }
       await fs.unlink(`${__dirname}/report.pdf`);
     });
-    const userId = res.locals.user.id;
-    const categories = await Category.findAll({
-      order: [['title']],
+    const { reportId } = req.params;
+    const report = await Reports.findByPk(reportId, {
       include: [{
-        model: Note,
-        as: 'taskIds',
-        required: false,
-        attributes: ['id'],
+        model: Orders,
+        include: [{
+          model: Company,
+        },
+        {
+          model: Contracts,
+        }],
       }],
-      where: { UserId: userId },
-      raw: true,
     });
-    if (!categories) {
-      return res.status(403).json({ message: 'something went wrong' });
-    }
-    const mapAsync = (arr, func) => Promise.all(arr.map(func));
-    await mapAsync(categories, async (category) => {
-      if (!category['taskIds.id']) {
-        category.svg = '';
-        return null;
-      }
-      const id = category['taskIds.id'];
-      category.svg = `${await fs.readFile(`${__dirname}/../note/svg/${id}`)}`;
-    });
-
-    ejs.renderFile(path.join(__dirname, './views/template.ejs'), { categories }, (err, data) => {
+    const newReport = report.dataValues;
+    console.log('newReport', newReport);
+    ejs.renderFile(path.join(__dirname, './views/template.ejs'), { newReport }, (err, data) => {
       if (err) {
         res.send(err);
       } else {
@@ -68,7 +59,6 @@ router.get('/generateReport', aunteficate(), async (req, res) => {
       }
     });
   } catch (err) {
-    console.log('err', err);
     return res.status(403).json({ message: err });
   }
 });
