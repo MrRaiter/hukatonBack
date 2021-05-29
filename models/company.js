@@ -56,6 +56,15 @@ module.exports = (Sequelize, DataTypes) => {
     Company.hasMany(models.User, {
       foreignKey: 'company_id',
     });
+    // Company.hasMany(models.Orders, {
+    //   foreignKey: 'company_id',
+    // });
+    Company.belongsToMany(models.Contracts, {
+      through: models.Orders,
+      // as: 'Skills',
+      foreignKey: 'company_id',
+      otherKey: 'contract_id',
+    });
   };
 
   return Company;

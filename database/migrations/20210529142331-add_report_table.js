@@ -6,31 +6,37 @@ module.exports = {
    * @param {import('sequelize').Sequelize} Sequelize
    */
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('orders', {
+    await queryInterface.createTable('reports', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      company_id: {
+      order_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: 'company',
+          model: 'orders',
           key: 'id',
         },
       },
-      contract_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'contracts',
-          key: 'id',
-        },
-      },
-      status: {
+      title: {
         type: Sequelize.STRING,
+        allowNull: true,
+      },
+      description: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      start_date: {
+        type: Sequelize.DATE,
+        field: 'start_date',
+        allowNull: true,
+      },
+      end_date: {
+        type: Sequelize.DATE,
+        field: 'end_date',
         allowNull: true,
       },
       createdAt: {
@@ -46,6 +52,6 @@ module.exports = {
     });
   },
   down: async (queryInterface) => {
-    await queryInterface.dropTable('orders');
+    await queryInterface.dropTable('reports');
   },
 };

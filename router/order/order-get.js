@@ -1,29 +1,37 @@
 const router = require('express').Router();
 const { promises: fs } = require('fs');
-const { Contracts, Company } = require('../../models');
+const { Contracts, Company, Orders } = require('../../models');
 const aunteficate = require('../../middlewares/aunteficate');
 
-router.get('/contracts', async (req, res, next) => {
+router.get('/orders', async (req, res, next) => {
   try {
-    const contracts = await Contracts.findAll({
+    const orders = await Orders.findAll({
       include: [{
         model: Company,
+      },
+      {
+        model: Contracts,
       }],
     });
-    res.json(contracts);
+
+    res.json(orders);
   } catch (err) {
     return res.status(403).json({ message: err });
   }
 });
-router.get('/contract/:contractId', async (req, res, next) => {
+
+router.get('/order/:orderId', async (req, res, next) => {
   try {
-    const { contractId } = req.params;
-    const contracts = await Contracts.findByPk(contractId, {
+    const { orderId } = req.params;
+    const order = await Orders.findByPk(orderId, {
       include: [{
         model: Company,
+      },
+      {
+        model: Contracts,
       }],
     });
-    res.json(contracts);
+    res.json(order);
   } catch (err) {
     return res.status(403).json({ message: err });
   }

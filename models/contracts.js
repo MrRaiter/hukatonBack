@@ -55,10 +55,11 @@ module.exports = (Sequelize, DataTypes) => {
   });
 
   Contracts.associate = (models) => {
-    //   Contracts.hasMany(models.Note, {
-    //     as: 'taskIds',
-    //     foreignKey: { foreignKey: 'columnid' },
-    //   });
+    Contracts.belongsToMany(models.Company, {
+      through: models.Orders,
+      foreignKey: 'contract_id',
+      otherKey: 'company_id',
+    });
     Contracts.belongsTo(models.Company, {
       foreignKey: { name: 'id', allowNull: false },
     });

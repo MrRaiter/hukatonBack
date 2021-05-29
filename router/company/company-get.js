@@ -13,4 +13,14 @@ router.get('/company', async (req, res, next) => {
   }
 });
 
+router.get('/company/:companyId', async (req, res, next) => {
+  try {
+    const { companyId } = req.params;
+    const company = await Company.findByPk(companyId);
+    res.json(company);
+  } catch (err) {
+    return res.status(403).json({ message: err });
+  }
+});
+
 module.exports = router;

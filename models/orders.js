@@ -32,32 +32,22 @@ module.exports = (Sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    // createdAt: {
-    //   allowNull: false,
-    //   type: Sequelize.DATE,
-    //   defaultValue: Sequelize.literal('NOW()'),
-    // },
-    // updatedAt: {
-    //   allowNull: false,
-    //   type: Sequelize.DATE,
-    //   defaultValue: Sequelize.literal('NOW()'),
-    // },
   }, {
     tableName: 'orders',
     timestamps: true,
   });
 
-  //   Contracts.associate = (models) => {
-  //     Contracts.hasMany(models.Note, {
-  //       as: 'taskIds',
-  //       foreignKey: { foreignKey: 'columnid' },
-  //     });
-  //     Contracts.belongsTo(models.User, {
-  //       foreignKey: { name: 'id', allowNull: false },
-  //       as: 'User',
-  //       onDelete: 'CASCADE',
-  //     });
-  //   };
+  Orders.associate = (models) => {
+    Orders.belongsTo(models.Company, {
+      foreignKey: { name: 'id', allowNull: false },
+    });
+    Orders.belongsTo(models.Contracts, {
+      foreignKey: { name: 'id', allowNull: false },
+    });
+    Orders.hasMany(models.Reports, {
+      foreignKey: 'order_id',
+    });
+  };
 
   return Orders;
 };
